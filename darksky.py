@@ -65,7 +65,45 @@ def weather(bot, trigger):
     humidity = str(int(round(current["humidity"] * 100))) + '%'
     pressure = str(int(round(current["pressure"]))) + 'mb'
     wind = 'Wind ' + str(int(round(current["windSpeed"]))) + 'mph, gusting to ' + str(int(round(current["windGust"]))) + 'mph, bearing ' + str(current["windBearing"]) + '°'
-    bot.say(u'%s: %s, %s, %s humidity, %s, %s' % (first_result, cover, temp, humidity, pressure, wind))
+    url = 'https://api.opencagedata.com/geocode/v1/json?q=' + first_result + '&key=' + opencageapikey
+    wresult = urllib.urlopen(url)
+    root = json.loads(wresult.read())
+    location = root["results"][0]["components"]
+    city = None
+    state = None
+    try:
+        city = location["city"]
+    except:
+        try:
+            city = location["town"]
+        except:
+            try:
+                city = location["village"]
+            except:
+                try:
+                    city = location["hamlet"]
+                except:
+                    try:
+                        city = location["county"]
+                    except:
+                        pass
+
+    try:
+        state = location["state_code"]
+    except:
+        try:
+            state = location["state"]
+        except:
+            try:
+                state = location["country"]
+            except:
+                pass
+
+    if city is None or state is None:
+        location = first_result
+    else:
+        location = city + ', ' + state
+    bot.say(u'%s: %s, %s, %s humidity, %s, %s' % (location, cover, temp, humidity, pressure, wind))
 
 
 @commands('setlocation', 'setloc')
