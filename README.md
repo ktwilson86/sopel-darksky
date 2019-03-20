@@ -4,7 +4,7 @@ Drop-in replacement for sopel weather module using [Dark Sky](https://darksky.ne
 Requires Dark Sky API key available here: https://darksky.net/dev \
 And OpenCage geocode API key available here: https://opencagedata.com/api
 
-SETUP
+## Setup
 
 Paste your own personal API keys inside the quotes of these line in darksky.py: \
 darkskyapikey = '' \
