@@ -71,7 +71,7 @@ def weather(bot, trigger):
     pressure = str(int(round(current["pressure"]))) + 'mb'
     bearing = int(current["windBearing"])
     bearing = degrees_to_cardinal(bearing)
-    wind = 'Wind ' + str(int(round(current["windSpeed"]))) + 'mph, gusting to ' + str(int(round(current["windGust"]))) + 'mph ' + bearing
+    wind = 'Wind ' + str(int(round(current["windSpeed"]))) + 'mph, gusting to ' + str(int(round(current["windGust"]))) + 'mph to the ' + bearing
     url = 'https://api.opencagedata.com/geocode/v1/json?q=' + first_result + '&key=' + opencageapikey
     wresult = urllib.urlopen(url)
     root = json.loads(wresult.read())
