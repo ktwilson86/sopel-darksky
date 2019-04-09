@@ -22,6 +22,11 @@ sys.setdefaultencoding('utf8')
 darkskyapikey = ''
 opencageapikey = ''
 
+def degrees_to_cardinal(d):
+    dirs = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+            "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
+    ix = int((d + 11.25)/22.5)
+    return dirs[ix % 16]
 
 def geolookup(query):
     """
@@ -64,7 +69,9 @@ def weather(bot, trigger):
     temp = str(round(temp,1)) + '°F (' + str(round((temp-32)*5/9,1)) + '°C)'
     humidity = str(int(round(current["humidity"] * 100))) + '%'
     pressure = str(int(round(current["pressure"]))) + 'mb'
-    wind = 'Wind ' + str(int(round(current["windSpeed"]))) + 'mph, gusting to ' + str(int(round(current["windGust"]))) + 'mph, bearing ' + str(current["windBearing"]) + '°'
+    bearing = int(current["windGust"])
+    bearing = degrees_to_cardinal(bearing)
+    wind = 'Wind ' + str(int(round(current["windSpeed"]))) + 'mph, gusting to ' + str(int(round(current["windGust"]))) + 'mph ' + bearing
     url = 'https://api.opencagedata.com/geocode/v1/json?q=' + first_result + '&key=' + opencageapikey
     wresult = urllib.urlopen(url)
     root = json.loads(wresult.read())
