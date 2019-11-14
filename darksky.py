@@ -12,12 +12,8 @@ http://sopel.dftba.net
 from sopel import web
 from sopel.module import commands, example, NOLIMIT
 
-import urllib
+import urllib.request
 import json
-import sys
-
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 darkskyapikey = ''
 opencageapikey = ''
@@ -33,7 +29,7 @@ def geolookup(query):
     Use open cage data to provide latitude & longitude coordinates for a given query
     """
     url = 'https://api.opencagedata.com/geocode/v1/json?q=' + query + '&key=' + opencageapikey
-    wresult = urllib.urlopen(url)
+    wresult = urllib.request.urlopen(url)
     root = json.loads(wresult.read())
     try:
         lng = root["results"][0]["geometry"]["lng"]
@@ -61,7 +57,7 @@ def weather(bot, trigger):
             if first_result is None:
                 return bot.reply("I don't know where that is.")
     url = 'https://api.darksky.net/forecast/' + darkskyapikey + '/' + first_result
-    wresult = urllib.urlopen(url)
+    wresult = urllib.request.urlopen(url)
     root = json.loads(wresult.read())
     current = root["currently"]
     cover = current["summary"]
@@ -73,7 +69,7 @@ def weather(bot, trigger):
     bearing = degrees_to_cardinal(bearing)
     wind = 'Wind ' + str(int(round(current["windSpeed"]))) + 'mph, gusting to ' + str(int(round(current["windGust"]))) + 'mph to the ' + bearing
     url = 'https://api.opencagedata.com/geocode/v1/json?q=' + first_result + '&key=' + opencageapikey
-    wresult = urllib.urlopen(url)
+    wresult = urllib.request.urlopen(url)
     root = json.loads(wresult.read())
     location = root["results"][0]["components"]
     city = None
